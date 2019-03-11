@@ -1,14 +1,22 @@
 let overlay = document.querySelector('.overlay');
 let modal = document.querySelector('.modal');
 let speed = 0;
+let level = '';
+let levelCount = 0;
 
 modal.addEventListener('click', function (e) {
 	if(e.target.classList.contains('easy')){
+		level = 'easy';
 		speed = 1000;
+		levelCount = 0;
 	}else if(e.target.classList.contains('normal')){
+		level = 'normal';
 		speed = 500;
+		levelCount = 5;
 	}else if(e.target.classList.contains('hard')){
+		level = 'hard';
 		speed = 200;
+		levelCount = 10;
 	}
 	if (e.target.classList.contains('button')){
 		modal.style.display = 'none';
@@ -115,8 +123,8 @@ function startGame() {
 					if (document.querySelector(`[posX = "${k}"][posY = "${i}"]`).classList.contains('set')) {
 						count++;
 						if (count == 10) {
-							score += 10;
-							input.value = `Ваши очки: ${score}`;
+							score += 10 + levelCount;
+							input.value = `Your score: ${score}`;
 							for (let m = 1; m < 11; m++) {
 								document.querySelector(`[posX = "${m}"][posY = "${i}"]`).classList.remove('set')
 							}
@@ -134,7 +142,6 @@ function startGame() {
 								newSet[a].classList.add('set');
 							}
 							i--;
-	
 						}
 					}
 				}
@@ -144,14 +151,14 @@ function startGame() {
 					clearInterval(interval);
 
 					let set = document.querySelectorAll('.figure, .set');
-					let video = document.querySelector('.game_over');
+					let finish = document.querySelector('.finish');
 					for (let z = 0; z < set.length; z++) {
 						set[z].classList.remove('figure');
 						set[z].classList.remove('set');
 					}
-					video.style.display = 'block';
+					finish.style.visibility = 'visible';
 					speed = 0;
-					alert(`Your Score: ${score}`);
+					alert(`Level game: ${level}\nYour score: ${score}`);
 				}
 			}
 			createFigure();
@@ -173,7 +180,7 @@ function startGame() {
 		let coordinates3 = [figureBody[2].getAttribute('posX'), figureBody[2].getAttribute('posY')];
 		let coordinates4 = [figureBody[3].getAttribute('posX'), figureBody[3].getAttribute('posY')];
 	
-		function 	getNewState(a) {
+		function getNewState(a) {
 			flag = true;
 	
 			let figureNew = [
@@ -229,7 +236,6 @@ function startGame() {
 		};
 	
 	});
-	
 	
 	let score = 0;
 	let input = document.getElementsByTagName('input')[0];
